@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class Exp1 {
+public class CaesarCipher {
     public static void encrypt(String text, int key) {
         String ct = "";
         String a = "abcdefghijklmnopqrstuvwxyz";
