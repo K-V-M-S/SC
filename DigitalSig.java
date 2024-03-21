@@ -1,6 +1,6 @@
 import java.security.*;
 
-public class Digs {
+public class DigitalSig {
 
     static String SIGNING_ALGORITHM = "SHA256withRSA";
     static int KEY_SIZE = 2048;
