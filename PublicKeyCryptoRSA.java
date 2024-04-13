@@ -1,47 +1,42 @@
+import java.util.*;
 import java.math.BigInteger;
-import java.security.SecureRandom;
+import java.security.*;
 
-public class PublicKeyCryptoRSA {
-    private final static BigInteger one = new BigInteger("1");
-    private final static SecureRandom random = new SecureRandom();
-    private BigInteger privateKey;
-    private BigInteger publicKey;
-    private BigInteger modulus;
+public class PublicKeyCryptoRSA{
 
-    PublicKeyCryptoRSA(int N) {
-        BigInteger p = BigInteger.probablePrime(N / 2, random);
-        BigInteger q = BigInteger.probablePrime(N / 2, random);
-        BigInteger phi = (p.subtract(one)).multiply(q.subtract(one));
+    static BigInteger one = new BigInteger("1");
+    static SecureRandom r = new SecureRandom();
+    BigInteger p,q,e,d,n,phi;
 
-        System.out.println("prime p = " + p);
-        System.out.println("prime q = " + q);
+    public PublicKeyCryptoRSA(int N){
+        p = BigInteger.probablePrime(N/2, r);
+        q = BigInteger.probablePrime(N/2, r);
+        n = p.multiply(q);
+        phi = (p.subtract(one)).multiply(q.subtract(one));
+        
+        do{
+            e = BigInteger.probablePrime(N/2, r);
+        }while(e.compareTo(phi)>=0 || !e.gcd(phi).equals(one));
 
-        modulus = p.multiply(q);
-        System.out.println("phi = " + phi);
+        d = e.modInverse(phi);
+        System.out.println("p : "+p+"\nq : "+q+"\ne : "+e+"\nd : "+d);
 
-        publicKey = new BigInteger("65537");
-        privateKey = publicKey.modInverse(phi);
     }
 
-    BigInteger encrypt(BigInteger message) {
-        return message.modPow(publicKey, modulus);
-    }
+    public static void main(String[] args) throws Exception{
+        
+        Scanner sc = new Scanner(System.in);
+        String m = sc.nextLine();
 
-    BigInteger decrypt(BigInteger encrypted) {
-        return encrypted.modPow(privateKey, modulus);
-    }
+        PublicKeyCryptoRSA key = new PublicKeyCryptoRSA(10);
 
-    public static void main(String[] args) {
-        int N = Integer.parseInt(args[0]);
-        Pkc key = new Pkc(N);
-        System.out.println(key);
+        BigInteger msg = new BigInteger(m);
+        BigInteger enc = msg.modPow(key.e,key.n);
+        BigInteger dec = msg.modPow(key.d,key.n);
 
-        BigInteger message = new BigInteger("8");
-        BigInteger encrypt = key.encrypt(message);
-        BigInteger decrypt = key.decrypt(encrypt);
+        System.out.println("Message : "+m);
+        System.out.println("Encrypted : "+enc);
+        System.out.println("Decrypted : "+dec);
 
-        System.out.println("message = " + message);
-        System.out.println("encrypted = " + encrypt);
-        System.out.println("decrypted = " + decrypt);
     }
 }
