@@ -2,7 +2,7 @@ import java.net.*;
 import java.util.Random;
 import java.io.*;
 
-public class DIffs {
+public class Dserver {
     public static void main(String[] args) throws Exception{
         ServerSocket ss = new ServerSocket(8988);
         Socket server = ss.accept();
