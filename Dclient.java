@@ -2,7 +2,7 @@ import java.util.*;
 import java.net.*;
 import java.io.*;
 
-public class Diffc {
+public class Dclient {
     public static void main(String[] args) throws Exception{
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter prime and generator : ");
